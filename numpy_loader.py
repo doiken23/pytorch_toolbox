@@ -29,7 +29,7 @@ class Numpy_SegmentationDataset(data_utils.Dataset):
         arr_list = [image_arr, GT_arr]
 
         if self.transform:
-            arr_lst = self.transform(arr_list)
+            arr_list = self.transform(arr_list)
 
         image_arr, GT_arr = arr_list
         return image_arr, GT_arr
@@ -47,7 +47,7 @@ class RandomCrop_Segmentation(object):
         self.output_size = output_size
 
     def __call__(self, arr_list):
-        image_arr, GT_Arr = arr_list
+        image_arr, GT_arr = arr_list
 
         h, w = image_arr.shape[1:]
         new_h, new_w = self.output_size, self.output_size
@@ -58,7 +58,9 @@ class RandomCrop_Segmentation(object):
         image_arr = image_arr[:, top: top + new_h, left: left + new_w]
         GT_arr    = GT_arr[:, top: top + new_h, left: left + new_w]
 
-        return image_arr, GT_arr
+        arr_list = [image_arr, GT_arr]
+
+        return arr_list
 
 class Flip_Segmentation(object):
     """
@@ -71,14 +73,16 @@ class Flip_Segmentation(object):
         image_arr, GT_arr = arr_list
 
         if random.choices([True, False]):
-            iamge_arr = np.flip(image_arr, 1).copy()
+            image_arr = np.flip(image_arr, 1).copy()
             GT_arr = np.flip(GT_arr, 1).copy()
 
         if random.choices([True, False]):
             image_arr = np.flip(image_arr, 2).copy()
             GT_arr = np.flip(GT_arr,2).copy()
 
-        return image_arr, GT_arr
+        arr_list = [image_arr, GT_arr]
+
+        return arr_list
 
 class Rotate_Segmentation(object):
     """
@@ -94,4 +98,6 @@ class Rotate_Segmentation(object):
         image_arr = np.rot90(image_arr, n[0], (1,2)).copy()
         GT_arr = np.rot90(GT_arr, n[0], (1,2)).copy()
 
-        return image_arr, GT_arr
+        arr_list = [image_arr, GT_arr]
+
+        return arr_list
