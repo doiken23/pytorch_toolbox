@@ -4,24 +4,25 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 # I refered https://github.com/clcarwin/focal_loss_pytorch/blob/master/focalloss.py
 
-class MultiClassForcalLoss(nn.Module):
+class MultiClassFocalLoss(nn.Module):
 
     def __init__(self, gamma=0, weight=None, size_average=True):
-        super(self).__init__()
+        super(MultiClassFocalLoss, self).__init__()
 
         self.gamma = gamma
         self.weight = weight
+        self.size_average = size_average
 
     def forward(self, input, target):
         if input.dim()>2:
             input = input.view(input.size(0), input.size(1), -1)
             input = input.transpose(1,2)
             input = input.contiguous().view(-1, input.size(2)).squeeze()
-        target = target(-1, 1)
+        target = target.view(-1, 1)
 
         # compute the negative likelyhood
         logpt = F.log_softmax(input)
-        logpt = logpt.gather(1,target)
+        logpt = logpt.gather(1,target.long())
         logpt = logpt.view(-1).squeeze()
         pt = Variable(logpt.data.exp())
 
@@ -30,8 +31,7 @@ class MultiClassForcalLoss(nn.Module):
             if self.weight.type() != input.data.type():
                 self.weight = self.weight.type_as(input.data)
             b_h_w, c = input.size()
-            weight_tensor = torch.zeros(b_h_w, 1)
-            weight_tensor[:,0] = weight[target.byte().squeeze()]
+            weight_tensor = Variable(self.weight[target.data.long().squeeze()])
 
         # compute the loss
         if self.weight is not None:
