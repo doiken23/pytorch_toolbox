@@ -26,7 +26,7 @@ class MultiClassFocalLoss(nn.Module):
         if target.dim()>2:
             target = target.view(target.size(0), target.size(1), -1)
             target = target.transpose(1,2)
-            target = target.contiguous().view(-1, target.size(2)).squeeze()
+            target = target.contiguous().view(-1, target.size(2))
         else:
             target = target.view(-1, 1)
 
