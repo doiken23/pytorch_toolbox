@@ -1,3 +1,8 @@
+####################################################
+##### This is focal loss class for multi class #####
+##### University of Tokyo Doi Kento            #####
+####################################################
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -18,7 +23,12 @@ class MultiClassFocalLoss(nn.Module):
             input = input.view(input.size(0), input.size(1), -1)
             input = input.transpose(1,2)
             input = input.contiguous().view(-1, input.size(2)).squeeze()
-        target = target.view(-1, 1)
+        if target.dim()>2:
+            target = target.view(target.size(0), target.size(1), -1)
+            target = target.transpose(1,2)
+            target = target.contiguous().view(-1, target.size(2)).squeeze()
+        else:
+            target = target.view(-1, 1)
 
         # compute the negative likelyhood
         logpt = F.log_softmax(input)
