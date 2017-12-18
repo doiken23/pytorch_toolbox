@@ -34,7 +34,8 @@ class MultiClassFocalLoss(nn.Module):
         logpt = F.log_softmax(input)
         logpt = logpt.gather(1,target.long())
         logpt = logpt.view(-1).squeeze()
-        pt = Variable(logpt.data.exp())
+        pt = nn.Softmax()(input)
+        pt = pt.gather(1, target).view(-1)
 
         # implement the class balancing (Coming soon...)
         if self.weight is not None:
@@ -54,5 +55,3 @@ class MultiClassFocalLoss(nn.Module):
             return loss.mean()
         else:
             return loss.sum()
-
-
