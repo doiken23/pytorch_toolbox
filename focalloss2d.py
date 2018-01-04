@@ -12,7 +12,7 @@ from torch.autograd import Variable
 class FocalLoss2d(nn.Module):
 
     def __init__(self, gamma=0, weight=None, size_average=True):
-        super(SimpleFocalLoss, self).__init__()
+        super(FocalLoss2d, self).__init__()
 
         self.gamma = gamma
         self.weight = weight
@@ -20,11 +20,11 @@ class FocalLoss2d(nn.Module):
 
     def forward(self, input, target):
         if input.dim()>2:
-            input = input.view(input.size(0), input.size(1), -1)
+            input = input.contiguous().view(input.size(0), input.size(1), -1)
             input = input.transpose(1,2)
             input = input.contiguous().view(-1, input.size(2)).squeeze()
         if target.dim()==4:
-            target = target.view(target.size(0), target.size(1), -1)
+            target = target.contiguous().view(target.size(0), target.size(1), -1)
             target = target.transpose(1,2)
             target = target.contiguous().view(-1, target.size(2)).squeeze()
         elif target.dim()==3:
