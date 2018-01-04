@@ -10,7 +10,7 @@ from torch.autograd import Variable
 
 class CrossEntropy2d(nn.Module):
 
-    def __init__(self,dim=1,  weight=None, size_average=True, ignore_index=-100):
+    def __init__(self, dim=1,  weight=None, size_average=True, ignore_index=-100):
         super(CrossEntropy2d, self).__init__()
 
         """
