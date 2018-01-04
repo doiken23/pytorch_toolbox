@@ -33,6 +33,7 @@ class FocalLoss2d(nn.Module):
             target = target.view(-1, 1)
 
         # compute the negative likelyhood
+        weight = Variable(self.weight)
         logpt = -F.cross_entropy(input, target)
         pt = torch.exp(logpt)
 
