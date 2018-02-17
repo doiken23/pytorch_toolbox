@@ -19,7 +19,7 @@ class Numpy_Flip(object):
 
 class Numpy_Rotate(object):
 
-    def __init__(sel):f
+    def __init__(self):
         pass
 
     def __call__(self, image_array):
