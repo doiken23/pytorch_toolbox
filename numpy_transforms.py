@@ -8,26 +8,23 @@ class Numpy_Flip(object):
     def __init__(self):
         pass
 
-    def __call__(self, data_list, p=0.5):
-        image_array, target = data_list
-
+    def __call__(self, image_array, p=0.5):
         if random.random() < p:
             image_array = image_array[:,:,::-1]
 
         if random.random() < p:
             image_array = image_array[:,::-1,:]
 
-        return [image_array, target]
+        return image_array.copy()
 
 class Numpy_Rotate(object):
 
     def __init__(self):
         pass
 
-    def __call__(self, data_list):
-        image_array, target = data_list
-        
+    def __call__(self, image_array):
+
         angle = random.choices([0, 1, 2, 3])
         image_array = np.rot90(image_array, angle[0], (1,2))
 
-        return [image_array, target]
+        return image_array.copy()
