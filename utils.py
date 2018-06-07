@@ -1,7 +1,8 @@
 import csv
+from pathlib import Path
 
 def writeout_args(args, out_dir):
-    fout = open(Path(out_dir).joinpath('arguments.csv', "wt"))
+    fout = open(Path(out_dir).joinpath('arguments.csv'), "wt")
     csvout = csv.writer(fout)
     print('*' * 20)
     print('Write out Arguments...')
