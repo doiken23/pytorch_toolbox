@@ -1,6 +1,6 @@
 import csv
 
-def writeout_augs(args, out_dir):
+def writeout_args(args, out_dir):
     fout = open(Path(out_dir).joinpath('arguments.csv', "wt"))
     csvout = csv.writer(fout)
     print('*' * 20)
